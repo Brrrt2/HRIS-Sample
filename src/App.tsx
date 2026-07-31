@@ -5,6 +5,9 @@ import { useSession, type Role } from '@/stores/session'
 import { useTheme } from '@/lib/theme'
 import { onText } from '@/lib/form'
 import Icon from '@/components/Icon'
+import Avatar from '@/components/Avatar'
+import ClockWidget from '@/components/ClockWidget'
+import NotificationBell from '@/components/NotificationBell'
 
 interface NavItem {
   to: string
@@ -19,18 +22,24 @@ const NAV: Record<Role, NavItem[]> = {
     { to: '/documents', icon: 'folder', label: 'Documents' },
     { to: '/payroll', icon: 'calculator', label: 'Payroll' },
     { to: '/leave', icon: 'calendar', label: 'Leave & Attendance' },
-    { to: '/settings', icon: 'settings', label: 'Settings' },
+    { to: '/attendance-ops', icon: 'clock', label: 'Overtime & DTR' },
+    { to: '/settings', icon: 'settings', label: 'Company Settings' },
+    { to: '/account', icon: 'idCard', label: 'My Settings' },
   ],
   manager: [
     { to: '/employees', icon: 'users', label: 'My Team' },
     { to: '/leave', icon: 'calendar', label: 'Leave Approvals' },
+    { to: '/attendance-ops', icon: 'clock', label: 'Overtime & DTR' },
     { to: '/documents', icon: 'folder', label: 'Team Documents' },
+    { to: '/account', icon: 'idCard', label: 'My Settings' },
   ],
   employee: [
     { to: '/my-pay', icon: 'banknote', label: 'My Payslip' },
     { to: '/leave', icon: 'calendar', label: 'My Leave' },
+    { to: '/attendance-ops', icon: 'clock', label: 'Overtime & DTR' },
     { to: '/documents', icon: 'folder', label: 'My Documents' },
     { to: '/my-profile', icon: 'idCard', label: 'My Profile' },
+    { to: '/account', icon: 'settings', label: 'My Settings' },
   ],
 }
 
@@ -40,13 +49,12 @@ const titles: Record<string, string> = {
   documents: 'Documents',
   payroll: 'Payroll',
   leave: 'Leave & Attendance',
-  settings: 'Settings',
+  'attendance-ops': 'Overtime & DTR',
+  settings: 'Company Settings',
+  account: 'My Settings',
   'my-pay': 'My Payslip',
   'my-profile': 'My Profile',
 }
-
-const initials = (e: { firstName: string; lastName: string }): string =>
-  (e.firstName[0] + e.lastName[0]).toUpperCase()
 
 export default defineComponent({
   name: 'App',
@@ -143,6 +151,8 @@ export default defineComponent({
                   ))}
                 </select>
               )}
+              <ClockWidget />
+              <NotificationBell />
               <button
                 class="theme-toggle"
                 onClick={toggle}
@@ -150,7 +160,11 @@ export default defineComponent({
               >
                 <Icon name={theme.value === 'dark' ? 'sun' : 'moon'} size={18} />
               </button>
-              <span class="av">{session.current ? initials(session.current) : 'HA'}</span>
+              <Avatar
+                profileKey={session.current?.id ?? session.role}
+                label={session.current ? `${session.current.firstName} ${session.current.lastName}` : session.roleLabel}
+                size={33}
+              />
             </div>
           </header>
           <main class="content">

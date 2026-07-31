@@ -113,3 +113,71 @@ export interface EmployeeDocument {
   size: number
   uploadedOn: string
 }
+
+// ---- Attendance: clock in/out, overtime, corrections ----
+
+/** A single day's clock in/out record. */
+export interface TimeLog {
+  id: string
+  employeeId: string
+  date: string // ISO date
+  clockIn?: string // ISO datetime
+  clockOut?: string // ISO datetime
+}
+
+export type OvertimeStatus = 'pending' | 'approved' | 'rejected'
+
+export interface OvertimeRequest {
+  id: string
+  employeeId: string
+  date: string // ISO date
+  startTime: string // HH:mm
+  endTime: string // HH:mm
+  hours: number
+  reason: string
+  status: OvertimeStatus
+  filedOn: string
+}
+
+export type CorrectionField = 'clockIn' | 'clockOut' | 'both'
+export type CorrectionStatus = 'pending' | 'approved' | 'rejected'
+
+export interface AttendanceCorrection {
+  id: string
+  employeeId: string
+  date: string // ISO date
+  field: CorrectionField
+  requestedClockIn?: string // HH:mm
+  requestedClockOut?: string // HH:mm
+  reason: string
+  status: CorrectionStatus
+  filedOn: string
+}
+
+// ---- Notifications / announcements ----
+
+export type NotificationAudience = 'all' | 'admin' | 'manager' | 'employee'
+
+export interface AppNotification {
+  id: string
+  title: string
+  message: string
+  audience: NotificationAudience
+  postedBy: string
+  postedOn: string // ISO datetime
+  readBy: string[] // reader keys (employee id, or role name for admin/manager with no acting employee)
+}
+
+// ---- Personal account settings ----
+
+export interface NotificationPrefs {
+  leaveUpdates: boolean
+  payrollUpdates: boolean
+  announcements: boolean
+}
+
+export const defaultNotificationPrefs: NotificationPrefs = {
+  leaveUpdates: true,
+  payrollUpdates: true,
+  announcements: true,
+}

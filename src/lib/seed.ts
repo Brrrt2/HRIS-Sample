@@ -1,4 +1,12 @@
-import type { Employee, LeaveRequest, CompanySettings } from '@/types'
+import type {
+  Employee,
+  LeaveRequest,
+  CompanySettings,
+  TimeLog,
+  OvertimeRequest,
+  AttendanceCorrection,
+  AppNotification,
+} from '@/types'
 
 export const defaultSettings: CompanySettings = {
   companyName: 'Mabuhay Foods Inc.',
@@ -76,6 +84,59 @@ export function seedLeaves(): LeaveRequest[] {
     {
       id: 'l4', employeeId: 'e2', type: 'Vacation Leave', startDate: '2026-06-12',
       endDate: '2026-06-13', days: 2, reason: 'Hometown fiesta', status: 'approved', filedOn: '2026-06-01',
+    },
+  ]
+}
+
+export function seedTimeLogs(): TimeLog[] {
+  const mk = (id: string, employeeId: string, date: string, clockIn: string, clockOut: string): TimeLog => ({
+    id, employeeId, date, clockIn: `${date}T${clockIn}:00`, clockOut: `${date}T${clockOut}:00`,
+  })
+  return [
+    mk('t1', 'e1', '2026-06-29', '08:58', '18:05'),
+    mk('t2', 'e1', '2026-06-30', '09:02', '18:00'),
+    mk('t3', 'e2', '2026-06-29', '08:55', '17:58'),
+    mk('t4', 'e2', '2026-06-30', '08:59', '18:10'),
+    mk('t5', 'e4', '2026-06-29', '07:58', '17:02'),
+    mk('t6', 'e4', '2026-06-30', '08:01', '17:00'),
+    mk('t7', 'e6', '2026-06-30', '09:05', '18:03'),
+  ]
+}
+
+export function seedOvertime(): OvertimeRequest[] {
+  return [
+    {
+      id: 'ot1', employeeId: 'e4', date: '2026-06-27', startTime: '18:00', endTime: '20:00',
+      hours: 2, reason: 'Inventory count for month-end', status: 'pending', filedOn: '2026-06-27',
+    },
+  ]
+}
+
+export function seedCorrections(): AttendanceCorrection[] {
+  return [
+    {
+      id: 'c1', employeeId: 'e6', date: '2026-06-26', field: 'clockIn', requestedClockIn: '09:00',
+      reason: 'Biometric scanner was offline at time-in', status: 'pending', filedOn: '2026-06-26',
+    },
+  ]
+}
+
+export function seedNotifications(): AppNotification[] {
+  const now = Date.now()
+  const daysAgo = (n: number): string => new Date(now - n * 86400000).toISOString()
+  return [
+    {
+      id: 'n1',
+      title: 'Payroll cutoff moved to June 28',
+      message:
+        "Due to the holiday, this cutoff's payroll will be processed a day early. Please file any pending leave, overtime, or attendance correction requests before end of day.",
+      audience: 'all', postedBy: 'HR / Admin', postedOn: daysAgo(1), readBy: [],
+    },
+    {
+      id: 'n2',
+      title: 'Reminder: submit missing 201 documents',
+      message: 'A few employees are still missing required 201 file documents. Please upload them via the Documents tab.',
+      audience: 'employee', postedBy: 'HR / Admin', postedOn: daysAgo(3), readBy: [],
     },
   ]
 }

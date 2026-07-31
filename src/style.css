@@ -265,18 +265,19 @@ button {
   font-size: 13px;
   color: var(--text-mut);
 }
-.topbar .who .av {
+.av {
   width: 33px;
   height: 33px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
   color: #fff;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 13px;
   box-shadow: 0 0 16px color-mix(in srgb, var(--brand-1) 40%, transparent);
+  flex-shrink: 0;
 }
 .theme-toggle {
   width: 38px;
@@ -719,6 +720,87 @@ tbody tr.clickable:hover {
   font-weight: 800;
   color: var(--brand-1);
   font-variant-numeric: tabular-nums;
+}
+
+/* notification bell */
+.notif-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.notif-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.notif-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+}
+.notif-panel {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  width: 330px;
+  max-height: 440px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+}
+.notif-panel-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+.notif-compose {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.notif-compose input,
+.notif-compose textarea,
+.notif-compose select {
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+}
+.notif-list {
+  padding: 4px;
+}
+.notif-item {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.notif-item:last-child {
+  border-bottom: none;
 }
 
 /* documents */
